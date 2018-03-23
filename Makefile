@@ -1,3 +1,3 @@
 make:
-	ghc main.hs
-	./main
+	ghc main.hs -o game
+	./game
