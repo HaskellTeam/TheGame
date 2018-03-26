@@ -8,39 +8,36 @@ module Main where
 -- import Prelude hidding (Either(..))
 import System.Console.ANSI
 import System.IO
+import System.Timeout
 import Control.Concurrent
 import Control.Monad
 import Data.Maybe
+
+inputTimeout = 300000
 
 
 main = do
     setSGR [ SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Blue ]
     putStrLn "Welcome to Tetris!"
     putStrLn "@"
-    forkIO $ do
-        handleInput
     gameloop
 
 
 gameloop = do
     putStrLn "..."
-    putStrLn "Input Usuario"
+    hFlush stdout
+    hSetBuffering stdin NoBuffering
+    
+    -- Handle Input
+    c <- timeout inputTimeout getChar
+    case c of
+        Nothing -> do putStrLn "Update game loop"
+        Just 'q' -> do putStrLn "Update game loop Quit State..."
+        Just input -> do putStrLn $ "Update game loop with input: " ++ [input]
+    
     putStrLn "Object Update"
     putStrLn "Cleaning"
     putStrLn "Rendering"
-    threadDelay 500000
+    threadDelay inputTimeout
+
     gameloop
-
-handleInput = do
-    c <- newEmptyMVar 
-    hSetBuffering stdin NoBuffering
-    forkIO $ do
-        a <- getChar
-        putMVar c a
-        putStrLn $ "\n" ++ [a]
-    wait c
-  where wait c = do
-        a <- tryTakeMVar c
-        if isJust a then handleInput
-        else threadDelay 50000 >> wait c
-
