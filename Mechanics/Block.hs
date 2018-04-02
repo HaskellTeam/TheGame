@@ -11,7 +11,6 @@ data Direction = None
     | East
     | South
 
-
 -- Position representa um ponto num plano Cartesiano (x, y)
 type Position = (Int, Int)
 
@@ -26,8 +25,8 @@ r block = ( fst block + 1, snd block)
 ur :: Block -> Position
 ur block = ( fst block + 1, snd block + 1)
 
-move :: Block -> Direction -> Block
-move b West = (fst b - 1, snd b)
-move b East = (fst b + 1, snd b)
-move b South = (fst b, snd b - 1)
-move b None = b
+project :: Block -> Direction -> Block
+project b West = (fst b - 1, snd b)
+project b East = (fst b + 1, snd b)
+project b South = (fst b, snd b - 1)
+project b None = b

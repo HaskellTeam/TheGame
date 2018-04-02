@@ -1,76 +1,71 @@
+module Mechanics where
+
 import Matrix
 import Block
 
 -- FrameIteration is Fit
 type Fit = Int
 
-moveBlock :: Matrix -> Block -> Direction -> Matrix
-moveBlock matrix blk West = matrix
-moveBlock matrix blk East = matrix
-moveBlock matrix blk South = matrix
-
-
 -- DATA STRUCTURES
 
 data Hit = Hit {
-    matrix :: Matrix,
-    didHit :: Bool
+    matrixOf :: Matrix,
+    blockOf :: Block,
+    didLayDown :: Bool
 }
 
 -- MECHANINCS
 updateMatrix :: Matrix -> Block -> Direction -> Hit
-updateMatrix m b South = fallBlock b m
-updateMatrix m b d = do
-    let newMatrix = sideMove b m d
-    Hit {
-        matrix = m,
-        didHit = False
-    }
-
--- move o bloco para baixo se não atingir espaços ocupados
--- assenta o bloco se atingir um espaço ocupado
-fallBlockHue :: Block -> Matrix -> Matrix
-fallBlockHue (a, 0) m = paintBlockOnMatrix (a, 0) m
-fallBlockHue b m = do
-    -- testa se o bloco colide com a fileira y abaixo de si
-    if hit (fst b, snd b - 1) m || hit (fst (r b), snd (r b) - 1) m
-    then
-        paintBlockOnMatrix b m
-    else 
-        fallBlock (move b South) m
-
--- move um bloco para baixo numa matriz, se possível
-fallBlock :: Block -> Matrix -> Hit
-fallBlock b m = do
-    if hit (fst b, snd b - 1) m || hit (fst (r b), snd (r b) - 1) m
-    then
-        Hit {
-        matrix = (paintBlockOnMatrix (fst b, snd b - 1) m),
-        didHit = True
-        }
-    else
-        Hit {
-        matrix = (paintBlockOnMatrix (fst b, snd b - 1) m),
-        didHit = False
-        }
-
-
+updateMatrix m b d = sideMove b d m
 
 -- testa se a posição p de um bloco está sobre um espaço vazio ou ocupado da matriz
 hit :: Position -> Matrix -> Bool
 hit p m = True && getSpot p m
 
--- move um bloco lateralmente (se possível) na matriz
--- apenas movimentos laterias (West | East) surtem efeito nesta função
--- outros movimentos apenas retornarão a matriz imutada
-sideMove :: Block -> Matrix -> Direction -> Matrix
-sideMove b m d = m
-sideMove b m West = do
-    if hit (move b West) m || hit (move (u b) West) m
-    then paintBlockOnMatrix b m
-    else paintBlockOnMatrix (move b West) m
+-- move um bloco (se possível) na matriz.
+move :: Block -> Direction -> Matrix ->  Hit
+move b None m = m
+move b West m = do
+    if hit (project b West) m || hit (project (u b) West) m
+    then Hit {
+        matrixOf = paintBlockOnMatrix b m,
+        blockOf = b,
+        didLayDown = false
+    } 
+    else Hit {
+        matrixOf = paintBlockOnMatrix (project b West) m,
+        blockOf = (project b West),
+        didLayDown = false
+    }
 
-sideMove b m East = do
-    if hit (move (r b) East) m || hit (move (ur b) East)
-    then paintBlockOnMatrix b m
-    else paintBlockOnMatrix (move b West) m
+move b m East = do
+    if hit (project (r b) East) m || hit (project (ur b) East)
+    then Hit {
+        matrixOf = paintBlockOnMatrix b m,
+        blockOf = b,
+        didLayDown = false
+    } 
+    else Hit {
+        matrixOf = paintBlockOnMatrix (project b East) m,
+        blockOf = (project b East),
+        didLayDown = false
+    }
+
+move b m South = do
+    if hit (move b South) m || hit (move (r b) South) m
+    then
+        Hit {
+            matrix = (paintBlockOnMatrix b m),
+            block = b,
+            didHit = True
+        }
+    else
+        Hit {
+            matrix = (paintBlockOnMatrix (project b South) m),
+            block = (move b south),
+            didHit = False
+        }
+    
+
+
+    
