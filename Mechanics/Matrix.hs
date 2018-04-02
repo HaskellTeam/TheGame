@@ -21,9 +21,12 @@ type Matrix = [Row]
 empty :: Row
 empty = [False, False, False, False, False]
 
+bottom :: Row
+bottom = [True, True, True, True, True]
+
 -- matriz padrão
 matrix :: Matrix
-matrix = [empty, empty, empty, empty, empty]
+matrix = [bottom, empty, empty, empty, empty, empty]
 
 
 -- MATRIX HELPERS

@@ -19,8 +19,8 @@ updateMatrix :: Matrix -> Block -> Direction -> Hit
 updateMatrix m b d = move b d m
 
 -- testa se a posição p de um bloco está sobre um espaço vazio ou ocupado da matriz
-hit :: Position -> Matrix -> Bool
-hit p m = True && getSpot p m
+hitBlock :: Position -> Matrix -> Bool
+hitBlock p m = True && getSpot p m
 
 -- move um bloco (se possível) na matriz.
 move :: Block -> Direction -> Matrix ->  Hit
@@ -30,7 +30,7 @@ move b None m = Hit {
     didLayDown = False
 }
 move b West m = do
-    if hit (project b West) m || hit (project (u b) West) m
+    if hitBlock (project b West) m || hitBlock (project (u b) West) m
     then Hit {
         matrixOf = paintBlockOnMatrix b m,
         blockOf = b,
@@ -43,7 +43,7 @@ move b West m = do
     }
 
 move b East m = do
-    if hit (project (r b) East) m || hit (project (ur b) East) m
+    if hitBlock (project (r b) East) m || hitBlock (project (ur b) East) m
     then Hit {
         matrixOf = paintBlockOnMatrix b m,
         blockOf = b,
@@ -56,7 +56,7 @@ move b East m = do
     }
 
 move b South m = do
-    if hit (project b South) m || hit (project (r b) South) m
+    if hitBlock (project b South) m || hitBlock (project (r b) South) m
     then
         Hit {
             matrixOf = (paintBlockOnMatrix b m),
