@@ -1,4 +1,4 @@
-module Block where
+module Mechanics.Block where
 
     -- Block representa a posição esquerda inferior de uma matriz 2x2
     -- u representa a posição esquerda superior de uma matriz 2x2, em relação a um block
@@ -15,6 +15,9 @@ data Direction = None
 type Position = (Int, Int)
 
 type Block = Position
+
+enterBlock :: Block
+enterBlock = (1, 3)
 
 u :: Block -> Position
 u block = ( fst block, snd block + 1)

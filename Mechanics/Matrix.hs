@@ -1,11 +1,11 @@
 
-module Matrix where
+module Mechanics.Matrix where
     -- A matriz do jogo é uma matriz 5x5 de valores booleanos
     -- False representa um espaço vazio e True representa um espaço ocupado
     -- Blocks entram na posição (1, 3), sendo x um valor arbitrário entre 0 e 3
     -- Bloks caem até a posição (x, y), sendo x um valor arbitrário entre 0 e 3 e y o valor True mais alto sob o bloco
 
-import Block
+import Mechanics.Block
 
 -- DATA STRUCTURES
 
