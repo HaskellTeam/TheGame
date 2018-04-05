@@ -80,6 +80,20 @@ move b South m = do
             blockOf = (project b South),
             didLayDown = False
         }
+
+destroyLine :: Int -> Matrix -> Matrix
+destroyLine i m = (take (i) m) ++ (drop (i + 1) m) ++ empty
+
+
+checkLine :: Row -> Bool
+checkLine row = head row && checkline (tail row)
+
+checkAndDestroy :: Matrix -> Int -> Matrix
+checkAndDestroy m 0 = m
+checkAndDesroy m len = do
+    if checkLine m!!(len -1)
+    then destroyLine
+    else checkAndDestroy m (len -1)
     
 
 
