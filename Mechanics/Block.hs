@@ -17,7 +17,7 @@ type Position = (Int, Int)
 type Block = Position
 
 enterBlock :: Block
-enterBlock = (1, 3)
+enterBlock = (2, 8)
 
 u :: Block -> Position
 u block = ( fst block, snd block + 1)

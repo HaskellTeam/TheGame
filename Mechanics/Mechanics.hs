@@ -24,6 +24,17 @@ hitBlock p m = True && getSpot p m
 
 -- move um bloco (se possível) na matriz.
 move :: Block -> Direction -> Matrix ->  Hit
+
+move (4,n) East m = Hit {
+    matrixOf = m,
+    blockOf = (4,n),
+    didLayDown = False
+}
+move (0,n) West m = Hit {
+    matrixOf = m,
+    blockOf = (0,n),
+    didLayDown = False
+}
 move b None m = Hit {
     matrixOf = m,
     blockOf = b,

@@ -45,7 +45,7 @@ gameloop m b = do
     clearScreen
 
     -- Render screen
-    printMatrix m (length m)
+    -- printMatrix m (length m)
 
     -- game delay
     threadDelay inputTimeout
@@ -53,8 +53,12 @@ gameloop m b = do
     do 
     actualHit <- (takeMVar hit)
     if didLayDown actualHit
-    then gameloop (matrixOf actualHit ) enterBlock
-    else gameloop m (blockOf actualHit )
+    then do
+        printMatrix (matrixOf actualHit ) (length m)
+        gameloop (matrixOf actualHit ) enterBlock
+    else do
+        printMatrix m (length m)
+        gameloop m (blockOf actualHit )
 
 inputMove :: Char -> Direction
 inputMove 'a' = West
