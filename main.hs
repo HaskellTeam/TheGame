@@ -49,15 +49,13 @@ gameloop m b = do
 
     -- game delay
     threadDelay inputTimeout
-
+    printMatrix ( paintBlockOnMatrix b m ) (length m)
     do 
     actualHit <- (takeMVar hit)
     if didLayDown actualHit
     then do
-        printMatrix (matrixOf actualHit ) (length m)
         gameloop (matrixOf actualHit ) enterBlock
     else do
-        printMatrix m (length m)
         gameloop m (blockOf actualHit )
 
 inputMove :: Char -> Direction
