@@ -6,6 +6,9 @@ module Mechanics.Matrix where
     -- Bloks caem até a posição (x, y), sendo x um valor arbitrário entre 0 e 3 e y o valor True mais alto sob o bloco
 
 import Mechanics.Block
+import System.Console.ANSI
+import System.IO
+import Data.Char
 
 -- DATA STRUCTURES
 
@@ -58,7 +61,50 @@ getSpot p m = (m!!(snd p))!!(fst p)
 --     printMatrix m (length m)
 
 printMatrix :: Matrix -> Int -> IO ()
-printMatrix matrix 0 = print("---------------------------end")
+printMatrix matrix 0 = printBlack
 printMatrix matrix len = do
-    print(matrix!!(len - 1))
+    printBlack
+    putStr "\t\t\t"
+    printRow (matrix!!(len - 1))
     printMatrix matrix (len - 1)
+    printBlack
+    
+
+printRow :: Row -> IO ()
+printRow [] = putStr "\n"
+printRow row = do
+    printElement (head row)
+    printBlack
+    printRow (tail row)
+    
+
+printElement :: Bool -> IO ()
+printElement elem = do
+    if(elem)
+        then do
+            printBlue
+            putStr "  "
+        else do
+            printWhite
+            putStr "  "
+    
+printBlue :: IO ()
+printBlue = do 
+    setSGR [ SetConsoleIntensity NormalIntensity
+            ,SetColor Foreground Vivid White
+            ,SetColor Background Dull Blue
+            ]
+
+printWhite :: IO ()
+printWhite = do
+    setSGR [ SetConsoleIntensity NormalIntensity
+            ,SetColor Foreground Dull Green
+            ,SetColor Background Vivid White
+            ]
+
+printBlack :: IO ()
+printBlack = do
+    setSGR [ SetConsoleIntensity NormalIntensity
+            ,SetColor Foreground Dull Black
+            ,SetColor Background Vivid Black
+            ]

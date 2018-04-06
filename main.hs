@@ -21,6 +21,8 @@ inputTimeout = 10000
 
 
 main = do
+    setCursorPosition 5 0
+    setTitle "Tetris THE GAME"
     setSGR [ SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Blue ]
     putStrLn "Welcome to Tetris!"
     putStrLn "@"
