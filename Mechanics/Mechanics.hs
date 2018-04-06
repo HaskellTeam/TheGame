@@ -106,4 +106,10 @@ checkAndDestroy m len = do
         checkAndDestroy (destroyLine (len - 1) m) (len - 1) -- This way will iterate to the end
     else do
         checkAndDestroy m (len - 1) -- Iterate check
-        
+
+didLose :: Matrix -> Bool
+didLose m = checkLoseRow (m !! 9)
+
+checkLoseRow :: Row -> Bool
+checkLoseRow [] = False
+checkLoseRow r = (head r) || checkLoseRow (tail r)
