@@ -11,3 +11,7 @@ Run:
 ```
 $ make
 ```
+
+</br>
+
+![Demo Tetris](https://github.com/HaskellTeam/TheGame/blob/master/video.gif)
