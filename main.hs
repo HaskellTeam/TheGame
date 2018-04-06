@@ -28,35 +28,39 @@ main = do
 
 gameloop :: Matrix -> Block -> IO ()
 gameloop m b = do
+
+    let upd_matrix = checkAndDestroy m (length m)
+
     hFlush stdout
     hSetBuffering stdin NoBuffering
     
     -- Handle Input
     c <- timeout inputTimeout getChar
     hit <- newEmptyMVar
+    
     case c of
-        Nothing -> do putMVar hit (updateMatrix m b None)
+        Nothing -> do putMVar hit (updateMatrix upd_matrix b None)
         Just 'q' -> do
             putStrLn "Update game loop Quit State..."
         Just input -> do
-            putMVar hit (updateMatrix m b (inputMove input))
-    
-    -- Clear Screen 
+            putMVar hit (updateMatrix upd_matrix b (inputMove input))
+
+    -- Just Clears the Screen... nothing more
     clearScreen
 
     -- Render screen
-    -- printMatrix m (length m)
+    printMatrix ( paintBlockOnMatrix b upd_matrix ) (length upd_matrix )
 
     -- game delay
     threadDelay inputTimeout
-    printMatrix ( paintBlockOnMatrix b m ) (length m)
+    
     do 
     actualHit <- (takeMVar hit)
     if didLayDown actualHit
     then do
-        gameloop (matrixOf actualHit ) enterBlock
+        gameloop (matrixOf actualHit) enterBlock -- Updates game loop when block touches another block or hit ground
     else do
-        gameloop m (blockOf actualHit )
+        gameloop upd_matrix (blockOf actualHit) -- Updates game loop when nothing happens
 
 inputMove :: Char -> Direction
 inputMove 'a' = West

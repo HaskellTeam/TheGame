@@ -17,6 +17,7 @@ data Hit = Hit {
 -- MECHANINCS
 updateMatrix :: Matrix -> Block -> Direction -> Hit
 updateMatrix m b d = move b d m
+-- check and destroy if there is any full line, otherwise return matrix
 
 -- testa se a posição p de um bloco está sobre um espaço vazio ou ocupado da matriz
 hitBlock :: Position -> Matrix -> Bool
@@ -40,6 +41,14 @@ move b None m = Hit {
     blockOf = b,
     didLayDown = False
 }
+
+-- When block hits the ground
+move (n,0) South m = Hit {
+    matrixOf = (paintBlockOnMatrix (n,0) m),
+    blockOf = (n,0),
+    didLayDown = True
+}
+
 move b West m = do
     if hitBlock (project b West) m || hitBlock (project (u b) West) m
     then Hit {
@@ -66,6 +75,7 @@ move b East m = do
         didLayDown = False
     }
 
+-- Check when block touches another block... love is in the air
 move b South m = do
     if hitBlock (project b South) m || hitBlock (project (r b) South) m
     then
@@ -82,19 +92,18 @@ move b South m = do
         }
 
 destroyLine :: Int -> Matrix -> Matrix
-destroyLine i m = (take (i) m) ++ (drop (i + 1) m) ++ empty
-
+destroyLine i m = (take (i) m) ++ (drop (i + 1) m) ++ [empty]
 
 checkLine :: Row -> Bool
-checkLine row = head row && checkline (tail row)
+checkLine [] = True
+checkLine row = (head row) && (checkLine (tail row))
 
 checkAndDestroy :: Matrix -> Int -> Matrix
 checkAndDestroy m 0 = m
-checkAndDesroy m len = do
-    if checkLine m!!(len -1)
-    then destroyLine
-    else checkAndDestroy m (len -1)
-    
-
-
-    
+checkAndDestroy m len = do
+    if (checkLine (m !! (len - 1) ))
+    then do
+        checkAndDestroy (destroyLine (len - 1) m) (len - 1) -- This way will iterate to the end
+    else do
+        checkAndDestroy m (len - 1) -- Iterate check
+        
