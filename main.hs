@@ -38,7 +38,7 @@ gameloop m b it = do
     nothing <- newEmptyMVar
     hit <- newEmptyMVar
 
-    if ( ((mod upd_it 20) == 0) && (upd_it /= 0) ) -- Equals 10 and not equals 0
+    if ( ((mod upd_it 10) == 0) && (upd_it /= 0) ) -- Equals 10 and not equals 0
         then putMVar hit (updateMatrix upd_matrix b South) -- Apply gravity every 10 frames
         else putMVar hit (updateMatrix upd_matrix b None)
 
