@@ -73,7 +73,10 @@ gameloop m b it = do
     actualHit <- (takeMVar hit)
     if didLayDown actualHit
     then do
-        when (didLose (matrixOf actualHit)) exitSuccess 
+        when (didLose (matrixOf actualHit)) (do 
+            putStrLn "Busted"
+            exitSuccess)
+
         gameloop (matrixOf actualHit) enterBlock (upd_it + 1) -- Updates game loop when block touches another block or hit ground
     else do
         gameloop upd_matrix (blockOf actualHit) (upd_it + 1) -- Updates game loop when nothing happens
