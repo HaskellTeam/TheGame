@@ -39,7 +39,7 @@ gameloop m b = do
     hit <- newEmptyMVar
     
     case c of
-        Nothing -> do putMVar hit (updateMatrix upd_matrix b None)
+        Nothing -> do putMVar hit (updateMatrix upd_matrix b South)
         Just 'q' -> do
             putStrLn "Update game loop Quit State..."
         Just input -> do
