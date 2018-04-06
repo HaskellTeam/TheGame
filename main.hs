@@ -15,6 +15,7 @@ import Data.Maybe
 import Mechanics.Mechanics
 import Mechanics.Matrix
 import Mechanics.Block
+import System.Exit
 
 inputTimeout = 300000
 
@@ -42,6 +43,7 @@ gameloop m b = do
         Nothing -> do putMVar hit (updateMatrix upd_matrix b None)
         Just 'q' -> do
             putStrLn "Update game loop Quit State..."
+            exitSuccess
         Just input -> do
             putMVar hit (updateMatrix upd_matrix b (inputMove input))
 
