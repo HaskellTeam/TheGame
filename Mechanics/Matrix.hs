@@ -61,20 +61,18 @@ getSpot p m = (m!!(snd p))!!(fst p)
 --     printMatrix m (length m)
 
 printMatrix :: Matrix -> Int -> IO ()
-printMatrix matrix 0 = printBlack
+printMatrix matrix 0 = resetColors
 printMatrix matrix len = do
-    printBlack
     putStr "\t\t\t"
     printRow (matrix!!(len - 1))
     printMatrix matrix (len - 1)
-    printBlack
     
 
 printRow :: Row -> IO ()
 printRow [] = putStr "\n"
 printRow row = do
     printElement (head row)
-    printBlack
+    resetColors
     printRow (tail row)
     
 
@@ -108,3 +106,6 @@ printBlack = do
             ,SetColor Foreground Dull Black
             ,SetColor Background Vivid Black
             ]
+
+resetColors :: IO ()
+resetColors = do setSGR [Reset]
