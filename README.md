@@ -1,7 +1,11 @@
 Integrantes:
-Lucas Brilhante @lucasBrilhante
-Lucas Costa     @lucasca73
-Miguél Nery     @MiguelNery
+
+| Nome  | Github |
+| ------------- | ------------- |
+| Lucas Brilhante  | [@lucasBrilhante](https://github.com/lucasBrilhante)  |
+| Lucas Costa  | [@lucasca73](https://github.com/lucasca73)  |
+| Miguél Nery  | [@MiguelNery](https://github.com/MiguelNery)  |
+     
 
 Dependecies:
 
